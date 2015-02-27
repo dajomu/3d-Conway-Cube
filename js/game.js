@@ -16,7 +16,7 @@ var container, stats;
 
       var tick = 0,
           refreshRate = 30;
-          
+
       var startingComplexity = 0.75;
 
       init();
@@ -65,7 +65,6 @@ var container, stats;
               if(Math.random() > startingComplexity){
                 tempmat = new THREE.MeshBasicMaterial({ color: 0x333333 } );
                 gameArray[i][j][k] = true;
-                stringy++;
               }
               else {
                 gameArray[i][j][k] = false;
