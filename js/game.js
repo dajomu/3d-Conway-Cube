@@ -167,7 +167,6 @@ var container, stats;
         if(tick > refreshRate){
           gameTick();
           tick = 0;
-          console.log(camera.position, camera.rotation);
         }
         render();
         stats.update();
