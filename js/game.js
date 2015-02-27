@@ -8,7 +8,6 @@ var container, stats;
       var offset = new THREE.Vector3( 10, 10, 10 );
 
       var gameArray = [];
-
       var group = new THREE.Group();
 
       var cubeLength = 15,
@@ -17,7 +16,7 @@ var container, stats;
 
       var tick = 0,
           refreshRate = 30;
-
+          
       var startingComplexity = 0.75;
 
       init();
@@ -45,14 +44,12 @@ var container, stats;
         controls.dynamicDampingFactor = 0.3;
 
         scene = new THREE.Scene();
-
         scene.add( new THREE.AmbientLight( 0x555555 ) );
 
         // Create the game array
-
         var geom = new THREE.BoxGeometry( 1, 1, 1 );
         var color = new THREE.Color();
-        var stringy = 0;
+
         for ( var i = 0; i < cubeLength; i ++ ) {
 
           gameArray[i] = [];
@@ -79,22 +76,15 @@ var container, stats;
               cube.position.y = j * cubeDistance;
               cube.position.z = k * cubeDistance;
               cube.scale.x = cube.scale.y = cube.scale.z = cubeScale;
-
               cube.pos = [i,j,k];
 
               group.add( cube );
 
             }
-
           }
-
         }
-        console.log(stringy);
 
         scene.add(group);
-        
-        console.log(scene, group, gameArray);
-        console.log(scene.children[1]);
 
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setClearColor( 0xcccccc );
@@ -138,7 +128,6 @@ var container, stats;
                 
                 var truth = gameArray[i][j][k];
                 var newtruth = truth;
-
                 if(newtruth){
                   
                   // rule 1 & 3
@@ -170,35 +159,24 @@ var container, stats;
         // end 3d loop
       }
 
-      //
-
       function onMouseMove( e ) {
-
         mouse.x = e.clientX;
         mouse.y = e.clientY;
-
       }
 
       function animate() {
-
         if(tick > refreshRate){
           gameTick();
           tick = 0;
           console.log(camera.position, camera.rotation);
         }
-        tick++;
-
         render();
         stats.update();
-
+        tick++;
         requestAnimationFrame( animate );
-
       }
 
       function render() {
-
         controls.update();
-
         renderer.render( scene, camera );
-
       }
