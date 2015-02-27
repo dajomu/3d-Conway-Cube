@@ -11,9 +11,12 @@ var container, stats;
 
       var group = new THREE.Group();
 
-      var cubeLength = 15;
+      var cubeLength = 15,
+          cubeDistance = 11,
+          cubeScale = 5;
 
-      var tick = 0;
+      var tick = 0,
+          refreshRate = 30;
 
       var startingComplexity = 0.75;
 
@@ -72,12 +75,10 @@ var container, stats;
               }
 
               cube = new THREE.Mesh( geom, tempmat );
-              cube.position.x = i * 11;
-              cube.position.y = j * 11;
-              cube.position.z = k * 11;
-              cube.scale.x = 10;
-              cube.scale.y = 10;
-              cube.scale.z = 10;
+              cube.position.x = i * cubeDistance;
+              cube.position.y = j * cubeDistance;
+              cube.position.z = k * cubeDistance;
+              cube.scale.x = cube.scale.y = cube.scale.z = cubeScale;
 
               cube.pos = [i,j,k];
 
@@ -96,7 +97,7 @@ var container, stats;
         console.log(scene.children[1]);
 
         renderer = new THREE.WebGLRenderer( { antialias: true } );
-        //renderer.setClearColor( 0xffffff );
+        renderer.setClearColor( 0xcccccc );
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.sortObjects = false;
@@ -112,7 +113,6 @@ var container, stats;
       }
 
       function gameTick(){
-        var stringy = "";
         // start 3d loop
         for ( var i = 0; i < cubeLength; i++ ) {
           for ( var j = 0; j < cubeLength; j++ ) {
@@ -127,7 +127,7 @@ var container, stats;
                           newj = j + jj,
                           newk = k + kk;
                       if(newi !== -1 && newj !== -1 && newk !== -1 && newi !== cubeLength && newj !== cubeLength && newk !== cubeLength){
-                        if(gameArray[newi][newj][newk]){
+                        if(gameArray[newi][newj][newk] /*&& ii !== 0 && jj !== 0 && kk !== 0*/){
                           liveNeighbours++;
                         }
                       }
@@ -138,35 +138,29 @@ var container, stats;
                 
                 var truth = gameArray[i][j][k];
                 var newtruth = truth;
-                //console.log(liveNeighbours);
-                //stringy += truth;
+
                 if(newtruth){
                   
                   // rule 1 & 3
-                  if(liveNeighbours < 2 || liveNeighbours > 3){
-                    //console.log("1&3");
+                  if(liveNeighbours < 1 || liveNeighbours > 3){
                     newtruth = false;
                   }
                 }
                 else {
                   // rule 4
                   if(liveNeighbours === 3){
-                    //console.log("4");
                     newtruth = true;
                   }
                 }
                 // if change -
                 if(truth !== newtruth){
-                  //console.log("changed!");
                   var groupPosition = (i * cubeLength * cubeLength) + (j * cubeLength) + k;
-                  //stringy += groupPosition;
-                  // set new colour -
+                  // set new colour
                   if(newtruth){
                     scene.children[1].children[groupPosition].material.color.setHex(0x333333);
                   }
                   else{
                     scene.children[1].children[groupPosition].material.color.setHex(0xffffff);
-                    //stringy++;
                   }
                   gameArray[i][j][k] = newtruth;
                 }
@@ -187,7 +181,7 @@ var container, stats;
 
       function animate() {
 
-        if(tick > 60){
+        if(tick > refreshRate){
           gameTick();
           tick = 0;
           console.log(camera.position, camera.rotation);
