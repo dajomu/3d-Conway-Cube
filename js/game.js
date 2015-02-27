@@ -12,7 +12,7 @@ var container, stats;
 
       var cubeLength = 15,
           cubeDistance = 11,
-          cubeScale = 5;
+          cubeScale = 8;
 
       var tick = 0,
           refreshRate = 30;
